@@ -180,7 +180,13 @@ def run_coala(console_printer=None,
             if not autoapply:
                 section['default_actions'] = ''
             elif force_show_patch:
-                section['default_actions'] = '*: ShowPatchAction'
+                # Append ShowPatchAction to default actions
+                try:
+                    section['default_actions'] = (
+                        '*: ShowPatchAction, {}'
+                        .format(section['default_actions']))
+                except IndexError:
+                    section['default_actions'] = '*: ShowPatchAction'
                 section['show_result_on_top'] = 'yeah'
 
             print_section_beginning(section)
