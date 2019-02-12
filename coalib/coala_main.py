@@ -191,6 +191,8 @@ def run_coala(console_printer=None,
                     pass
                 if not default_actions:
                     section['default_actions'] = '*: ShowPatchAction'
+                else:
+                    section['default_actions'] = default_actions
 
                 section['show_result_on_top'] = 'yeah'
 
