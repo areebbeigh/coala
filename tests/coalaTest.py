@@ -435,8 +435,6 @@ class coalaTest(unittest.TestCase):
                         '--settings',
                         'use_spaces=True'
                     )
-                    self.assertIn('Line contains ',
-                                  stdout)
                     self.assertIn("Applied 'ShowPatchAction'", stderr)
                     self.assertIn("Applied 'ApplyPatchAction'", stderr)
                     self.assertNotIn("Applied 'DoNothingAction'", stderr)
