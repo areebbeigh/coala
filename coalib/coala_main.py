@@ -175,8 +175,8 @@ def run_coala(console_printer=None,
             if not section.is_enabled(targets):
                 continue
 
-            default_actions = []
             if autoapply:
+                default_actions = []
                 if force_show_patch:
                     default_actions.append('*: ShowPatchAction')
                     section['show_result_on_top'] = 'yeah'
@@ -184,7 +184,10 @@ def run_coala(console_printer=None,
                 if (args and args.apply_patches) or (arg_list and '--apply-patches' in arg_list):
                     default_actions.append('**: ApplyPatchAction')
 
-            section['default_actions'] = ', '.join(default_actions)
+                if default_actions:
+                    section['default_actions'] = ', '.join(default_actions)
+            else:
+                section['default_actions'] = ''
 
             print_section_beginning(section)
             section_result = execute_section(
