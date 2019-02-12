@@ -140,9 +140,7 @@ def autoapply_actions(results,
             # Match full bear names deterministically, prioritized!
             actions.append(default_actions[result.origin])
         except KeyError:
-            for bear_glob in default_actions:
-                if fnmatch(result.origin, bear_glob):
-                    actions.append(default_actions[bear_glob])
+            actions = [default_actions[glob] for glob in default_actions if fnmatch(result.origin, glob)]
             if not len(actions):
                 not_processed_results.append(result)
 
