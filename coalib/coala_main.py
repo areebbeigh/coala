@@ -181,12 +181,17 @@ def run_coala(console_printer=None,
                 section['default_actions'] = ''
             elif force_show_patch:
                 # Append ShowPatchAction to default actions
+                default_actions = ''
                 try:
-                    section['default_actions'] = (
-                        '*: ShowPatchAction, {}'
-                        .format(section['default_actions']))
+                    if section['default_actions'].from_cli:
+                        default_actions = (
+                            '*: ShowPatchAction, {}'
+                            .format(section['default_actions']))
                 except IndexError:
+                    pass
+                if not default_actions:
                     section['default_actions'] = '*: ShowPatchAction'
+
                 section['show_result_on_top'] = 'yeah'
 
             print_section_beginning(section)
