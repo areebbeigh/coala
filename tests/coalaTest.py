@@ -420,13 +420,14 @@ class coalaTest(unittest.TestCase):
     def test_coala_override_config_actions(self):
         coala_config = ('[all]',
                         'default_actions = **: DoNothingAction')
-        
+
         with bear_test_module():
-            with prepare_file(['#fixme'], None) as (_, filename):
+            with prepare_file(['\t#fixme'], None) as (_, filename):
                 with prepare_file(coala_config, None) as (_, configuration):
-                    results, stdout, stderr = execute_coala(
+                    exitcode, stdout, stderr = execute_coala(
                         coala.main, 'coala',
                         '--non-interactive',
+                        '--apply-patches',
                         '-c', configuration,
                         '-f', filename,
                         '-b',
@@ -434,28 +435,8 @@ class coalaTest(unittest.TestCase):
                         '--settings',
                         'use_spaces=True'
                     )
-
-'''
-        coala_config = ('[section_one]',
-                        'tags = save',
-                        '[section_two]',
-                        'tags = change',)
-
-        with bear_test_module():
-            with prepare_file(['#fixme'], None) as (_, filename):
-                with prepare_file(coala_config, None) as (_, configuration):
-                    results, retval, _ = run_coala(
-                                            console_printer=ConsolePrinter(),
-                                            log_printer=LogPrinter(),
-                                            arg_list=(
-                                                '-c', configuration,
-                                                '-f', filename,
-                                                '-b', 'TestBear',
-                                                '--filter-by', 'section_tags',
-                                                'save'
-                                            ),
-                                            autoapply=False,
-                                            debug=debug)
-
-                    self.assertTrue('section_one' in results)
-'''
+                    self.assertIn('Line contains ',
+                                  stdout)
+                    self.assertIn("Applied 'ShowPatchAction'", stderr)
+                    self.assertIn("Applied 'ApplyPatchAction'", stderr)
+                    self.assertNotIn("Applied 'DoNothingAction'", stderr)
