@@ -175,18 +175,16 @@ def run_coala(console_printer=None,
             if not section.is_enabled(targets):
                 continue
 
-            default_actions = ''
-            if not autoapply:
-                section['default_actions'] = ''
-            elif force_show_patch:
-                default_actions += '*: ShowPatchAction'
-                section['show_result_on_top'] = 'yeah'
+            default_actions = []
+            if autoapply:
+                if force_show_patch:
+                    default_actions.append('*: ShowPatchAction')
+                    section['show_result_on_top'] = 'yeah'
 
-            if autoapply and args and (args.apply_patches or '--apply-patches' in arg_list):
-                default_actions += ', **: ApplyPatchAction'
+                if (args and args.apply_patches) or ('--apply-patches' in arg_list):
+                    default_actions.append('**: ApplyPatchAction')
 
-            if default_actions:
-                section['default_actions'] = default_actions
+            section['default_actions'] = ', '.join(default_actions)
 
             print_section_beginning(section)
             section_result = execute_section(
