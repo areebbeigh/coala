@@ -181,7 +181,7 @@ def run_coala(console_printer=None,
                     default_actions.append('*: ShowPatchAction')
                     section['show_result_on_top'] = 'yeah'
 
-                if (args and args.apply_patches) or ('--apply-patches' in arg_list):
+                if (args and args.apply_patches) or (arg_list and '--apply-patches' in arg_list):
                     default_actions.append('**: ApplyPatchAction')
 
             section['default_actions'] = ', '.join(default_actions)
