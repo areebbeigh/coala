@@ -184,7 +184,9 @@ def run_coala(console_printer=None,
                     section['show_result_on_top'] = 'yeah'
                 if args.apply_patches:
                     default_actions += ', **: ApplyPatchAction'
-                section['default_actions'] = default_actions
+                if default_actions:
+                    # Overriding config default_actions with CLI default_actions
+                    section['default_actions'] = default_actions
 
             print_section_beginning(section)
             section_result = execute_section(

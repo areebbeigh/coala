@@ -416,3 +416,46 @@ class coalaTest(unittest.TestCase):
                 self.assertEqual(stdout, 'Executing section cli...\n')
                 self.assertEqual(retval, 0, 'coala must return zero when '
                                  'there are no errors')
+
+    def test_coala_override_config_actions(self):
+        coala_config = ('[all]',
+                        'default_actions = **: DoNothingAction')
+        
+        with bear_test_module():
+            with prepare_file(['#fixme'], None) as (_, filename):
+                with prepare_file(coala_config, None) as (_, configuration):
+                    results, stdout, stderr = execute_coala(
+                        coala.main, 'coala',
+                        '--non-interactive',
+                        '-c', configuration,
+                        '-f', filename,
+                        '-b',
+                        'SpaceConsistencyTestBear',
+                        '--settings',
+                        'use_spaces=True'
+                    )
+
+'''
+        coala_config = ('[section_one]',
+                        'tags = save',
+                        '[section_two]',
+                        'tags = change',)
+
+        with bear_test_module():
+            with prepare_file(['#fixme'], None) as (_, filename):
+                with prepare_file(coala_config, None) as (_, configuration):
+                    results, retval, _ = run_coala(
+                                            console_printer=ConsolePrinter(),
+                                            log_printer=LogPrinter(),
+                                            arg_list=(
+                                                '-c', configuration,
+                                                '-f', filename,
+                                                '-b', 'TestBear',
+                                                '--filter-by', 'section_tags',
+                                                'save'
+                                            ),
+                                            autoapply=False,
+                                            debug=debug)
+
+                    self.assertTrue('section_one' in results)
+'''
